@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { EncabezadoComponent } from './componentes/encabezado/encabezado.component';
 import { BarraComponent } from './componentes/barra/barra.component';
 import { CuerpoComponent } from './componentes/cuerpo/cuerpo.component';
-import { PieComponent } from './componentes/pie/pie.component';
 import { AcercaDeComponent } from './componentes/acerca-de/acerca-de.component';
 import { ExperienciaComponent } from './componentes/experiencia/experiencia.component';
 import { EducacionComponent } from './componentes/educacion/educacion.component';
@@ -23,7 +22,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     EncabezadoComponent,
     BarraComponent,
     CuerpoComponent,
-    PieComponent,
     AcercaDeComponent,
     ExperienciaComponent,
     EducacionComponent,
