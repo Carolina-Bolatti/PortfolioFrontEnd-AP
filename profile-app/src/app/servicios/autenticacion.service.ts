@@ -21,4 +21,9 @@ export class AutenticacionService {
       return data;
     }))
   }
+
+  get UsuarioAutenticado()
+  {
+    return this.currentUserSubject.value;
+  }
 }
