@@ -8,35 +8,11 @@
       <tr>
         <td>
             <table class="table">
-                <tbody>
+                <tbody *ngFor="let skill of miSkillsHardList">
                     <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 100.png"></th>
+                        <th scope="row"><img [src]="skill.urlPorcentaje"></th>
                         <td>
-                            <p>ADOBE CREATIVE</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 75.png"></th>
-                        <td>
-                            <p>REASON & CUBASE</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 75.png"></th>
-                        <td>
-                            <p>OFFICE</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 12.png"></th>
-                        <td>
-                            <p>HTML/CSS/PHP/JAVASCRIPT/JAVA/PYTHON</p>
+                            <p>{{skill.nombreSkill}}</p>
                         </td>
                     </tr>
                 </tbody>
@@ -44,35 +20,11 @@
         </td>
         <td>
             <table class="table">
-                <tbody>
+                <tbody  *ngFor="let skill of miSkillsSoftList">
                     <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 100.png"></th>
+                        <th scope="row"><img [src]="skill.urlPorcentaje"></th>
                         <td>
-                            <p>CREATIVIDAD & EMPATIA</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 100.png"></th>
-                        <td>
-                            <p>COLABORACION & ESPIRITU DE EQUIPO</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 75.png"></th>
-                        <td>
-                            <p>MANEJO DEL TIEMPO & ETICA LABORAL</p>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <th scope="row"><img src="assets/skills/imagenes/LOAD 75.png"></th>
-                        <td>
-                            <p>ADAPTABILIDAD & COMUNICACION</p>
+                            <p>{{skill.nombreSkill}}</p>
                         </td>
                     </tr>
                 </tbody>

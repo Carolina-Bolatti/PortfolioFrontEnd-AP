@@ -3,10 +3,10 @@
         <a href="https://www.argentina.gob.ar/economia/conocimiento/argentina-programa"><img class="ap-header" src="assets/encabezado/imagenes/APLogo-20-20.png" alt="Argentina Programa"></a>
     </div>
     <div class="d-flex align-items-center float-end" style="margin-left: 75%;">
-        <a href="https://www.linkedin.com/in/carolina-bolatti/"><img class="in-header" src="assets/encabezado/imagenes/Linkedin_logo.jpeg.png" alt="LinkedIn"></a>
-        <a href="https://instagram.com/abibolatti?igshid=YjNmNGQ3MDY="><img class="in-header" src="assets/encabezado/imagenes/instagram_logo.jpeg.png" alt="Instagram"></a>
-        <a href="https://github.com/Carolina-Bolatti"><img class="in-header" src="assets/encabezado/imagenes/GitHub_logo.jpeg.png" alt="GitHub"></a>
-        <button type="button" class="btn btn-dark login-header">Login</button>
+        <a [href]="miPersona.urlLinkedin"><img class="in-header" src="assets/encabezado/imagenes/Linkedin_logo.jpeg.png" alt="LinkedIn"></a>
+        <a [href]="miPersona.urlIg"><img class="in-header" src="assets/encabezado/imagenes/instagram_logo.jpeg.png" alt="Instagram"></a>
+        <a [href]="miPersona.urlGithub"><img class="in-header" src="assets/encabezado/imagenes/GitHub_logo.jpeg.png" alt="GitHub"></a>
+        <button type="button" onclick="location.href='iniciar-sesion'" class="btn btn-dark login-header">Login</button>
     </div>
 </div>
-<img class="banner-header" src="assets/encabezado/imagenes/Banner_Carolina Bolatti_2022.jpg" alt="Carolina Bolatti">
+<img class="banner-header" [src]="miPersona.urlBanner" alt="{{miPersona.nombre}} {{miPersona.apellido}}">
