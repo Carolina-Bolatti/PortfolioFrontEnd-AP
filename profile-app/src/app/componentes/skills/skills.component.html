@@ -1,17 +1,63 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">HARD & SOFT SKILLS</th>
+        <th scope="col" class="d-flex d-flex-row">
+            <div>HARD & SOFT SKILLS</div>
+            <div class="d-flex justify-content-end float-start" style="margin-left: 2%;">
+              <button *ngIf="noLogueado === false && agregando === false" type="button" (click)="onAdd()" class="btn btn-dark login-header"><i class="fa-solid fa-plus"></i></button>
+              <button *ngIf="noLogueado === false && agregando === false" style="visibility: hidden;" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+              <button *ngIf="noLogueado === false && agregando" type="button" (click)="onNew()" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+              <button *ngIf="noLogueado === false && agregando" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+            </div>
+        </th>
       </tr>
     </thead>
+</table>
+<div *ngIf="agregando">
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">HARD / SOFT</span>
+    <input #tipoId (keyup)="getTipoValue(tipoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">URL Porcentaje</span>
+    <input #porcentajeId (keyup)="getUrlPorcentajeValue(porcentajeId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Skill</span>
+    <input #skillId (keyup)="getNombreSkillValue(skillId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+</div>
+<table class="table">
     <tbody>
       <tr>
         <td>
             <table class="table">
                 <tbody *ngFor="let skill of miSkillsHardList">
                     <tr>
-                        <th scope="row"><img [src]="skill.urlPorcentaje"></th>
-                        <td>
+                        <th scope="row">
+                            <div class="d-flex align-items-center float-end">
+                                <button *ngIf="noLogueado === false && editando.get(skill.id) === false && borrando.get(skill.id) === false" type="button" (click)="onEdit(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-pen"></i></button>
+                                <button *ngIf="noLogueado === false && editando.get(skill.id) === false && borrando.get(skill.id) === false" type="button" (click)="onDelete(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-trash-can"></i></button>
+                                <button *ngIf="noLogueado === false && (editando.get(skill.id) || borrando.get(skill.id))" type="button" (click)="onSave(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+                                <button *ngIf="noLogueado === false && (editando.get(skill.id) || borrando.get(skill.id))" type="button" (click)="onCancel(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+                            </div>
+                            <img *ngIf="editando.get(skill.id) === false && borrando.get(skill.id) === false" [src]="skill.urlPorcentaje">
+                            <div *ngIf="editando.get(skill.id)" style="width:200%">
+                                <div class="input-group d-flex d-flex-row">
+                                  <span class="input-group-text" id="basic-addon3">HARD / SOFT</span>
+                                  <input #tipoId (keyup)="getTipoValueMap(skill.id, tipoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="skill.tipo">
+                                </div>
+                                <div class="input-group d-flex d-flex-row">
+                                  <span class="input-group-text" id="basic-addon3">URL Porcentaje</span>
+                                  <input #porcentajeId (keyup)="getUrlPorcentajeValueMap(skill.id, porcentajeId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="skill.urlPorcentaje">
+                                </div>
+                                <div class="input-group d-flex d-flex-row">
+                                  <span class="input-group-text" id="basic-addon3">Skill</span>
+                                  <input #skillId (keyup)="getNombreSkillValueMap(skill.id, skillId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="skill.nombreSkill">
+                                </div>
+                            </div>
+                        </th>
+                        <td *ngIf="editando.get(skill.id) === false" [ngClass]="{'text-decoration-line-through' : borrando.get(skill.id)}">
                             <p>{{skill.nombreSkill}}</p>
                         </td>
                     </tr>
@@ -22,8 +68,31 @@
             <table class="table">
                 <tbody  *ngFor="let skill of miSkillsSoftList">
                     <tr>
-                        <th scope="row"><img [src]="skill.urlPorcentaje"></th>
-                        <td>
+                        <th scope="row">
+                            <div class="d-flex align-items-center float-end">
+                                <button *ngIf="noLogueado === false && editando.get(skill.id) === false && borrando.get(skill.id) === false" type="button" (click)="onEdit(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-pen"></i></button>
+                                <button *ngIf="noLogueado === false && editando.get(skill.id) === false && borrando.get(skill.id) === false" type="button" (click)="onDelete(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-trash-can"></i></button>
+                                <button *ngIf="noLogueado === false && (editando.get(skill.id) || borrando.get(skill.id))" type="button" (click)="onSave(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+                                <button *ngIf="noLogueado === false && (editando.get(skill.id) || borrando.get(skill.id))" type="button" (click)="onCancel(skill.id)" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+                            </div>
+
+                            <img *ngIf="editando.get(skill.id) === false && borrando.get(skill.id) === false" [src]="skill.urlPorcentaje">
+                            <div *ngIf="editando.get(skill.id)"  style="width: 200%;">
+                                <div class="input-group d-flex d-flex-row">
+                                  <span class="input-group-text" id="basic-addon3">HARD / SOFT</span>
+                                  <input #tipoId (keyup)="getTipoValueMap(skill.id, tipoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="skill.tipo">
+                                </div>
+                                <div class="input-group d-flex d-flex-row">
+                                  <span class="input-group-text" id="basic-addon3">URL Porcentaje</span>
+                                  <input #porcentajeId (keyup)="getUrlPorcentajeValueMap(skill.id, porcentajeId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="skill.urlPorcentaje">
+                                </div>
+                                <div class="input-group d-flex d-flex-row">
+                                  <span class="input-group-text" id="basic-addon3">Skill</span>
+                                  <input #skillId (keyup)="getNombreSkillValueMap(skill.id, skillId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="skill.nombreSkill">
+                                </div>
+                            </div>
+                        </th>
+                        <td *ngIf="editando.get(skill.id) === false" [ngClass]="{'text-decoration-line-through' : borrando.get(skill.id)}">
                             <p>{{skill.nombreSkill}}</p>
                         </td>
                     </tr>

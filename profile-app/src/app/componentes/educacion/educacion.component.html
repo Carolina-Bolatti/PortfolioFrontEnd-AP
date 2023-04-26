@@ -1,18 +1,96 @@
 <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">EDUCACION</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let educacion of miEducacionList">
-        <th scope="row"><img [src]="educacion.urlFoto"></th>
-        <td>
-            <div><b>{{educacion.tituloAlcanzado}}</b></div>
-            <div *ngIf="educacion.estaCursando">{{educacion.lugar}} ({{educacion.fechaInicio}} - Presente)</div>
-            <div *ngIf="educacion.estaCursando === false">{{educacion.lugar}} ({{educacion.fechaInicio}} - {{educacion.fechaFin}})</div>
-            <div>{{educacion.descripcion}}</div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th scope="col" class="d-flex align-items-center">
+        <div>EDUCACION</div>
+        <div class="d-flex justify-content-end float-end" style="margin-left: 2%;">
+          <button *ngIf="noLogueado === false && agregando === false" type="button" (click)="onAdd()" class="btn btn-dark login-header"><i class="fa-solid fa-plus"></i></button>
+          <button *ngIf="noLogueado === false && agregando === false" style="visibility: hidden;" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+          <button *ngIf="noLogueado === false && agregando" type="button" (click)="onNew()" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+          <button *ngIf="noLogueado === false && agregando" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+        </div>  
+      </th>
+    </tr>
+  </thead>
+</table>
+<div *ngIf="agregando">
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Está Cursando</span>
+    <input style="margin-top: 1.5%;" #estaCursandoId (change)="getEstaCursandoValue(estaCursandoId.checked)" type="checkbox" class="input-group-text form-check-input" aria-describedby="basic-addon3" [checked]="false">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">URL Foto</span>
+    <input #urlFotoId (keyup)="getUrlFotoValue(urlFotoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Título</span>
+    <input #tituloAlcanzadoId (keyup)="getTituloAlcanzadoValue(tituloAlcanzadoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Lugar</span>
+    <input #lugarId (keyup)="getLugarValue(lugarId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Año Inicio</span>
+    <input #fechaInicioId (keyup)="getFechaInicioValue(fechaInicioId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div *ngIf="!estaCursando" class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Año Fin</span>
+    <input #fechaFinId (keyup)="getFechaFinValue(fechaFinId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Descripción</span>
+    <input #descripcionId (keyup)="getDescripcionValue(descripcionId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+</div>
+<table class="table">
+  <tbody>
+    <tr *ngFor="let educacion of miEducacionList">
+      <th scope="row">
+        <div class="d-flex align-items-center float-end">
+          <button *ngIf="noLogueado === false && editando.get(educacion.id) === false && borrando.get(educacion.id) === false" type="button" (click)="onEdit(educacion.id)" class="btn btn-dark login-header"><i class="fa-regular fa-pen"></i></button>
+          <button *ngIf="noLogueado === false && editando.get(educacion.id) === false && borrando.get(educacion.id) === false" type="button" (click)="onDelete(educacion.id)" class="btn btn-dark login-header"><i class="fa-regular fa-trash-can"></i></button>
+          <button *ngIf="noLogueado === false && (editando.get(educacion.id) || borrando.get(educacion.id))" type="button" (click)="onSave(educacion.id)" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+          <button *ngIf="noLogueado === false && (editando.get(educacion.id) || borrando.get(educacion.id))" type="button" (click)="onCancel(educacion.id)" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+        <img *ngIf="editando.get(educacion.id) === false && borrando.get(educacion.id) === false" [src]="educacion.urlFoto">
+      </th>
+      <td *ngIf="editando.get(educacion.id) === false" [ngClass]="{'text-decoration-line-through' : borrando.get(educacion.id)}">
+          <div><b>{{educacion.tituloAlcanzado}}</b></div>
+          <div *ngIf="educacion.estaCursando">{{educacion.lugar}} ({{educacion.fechaInicio}} - Presente)</div>
+          <div *ngIf="educacion.estaCursando === false">{{educacion.lugar}} ({{educacion.fechaInicio}} - {{educacion.fechaFin}})</div>
+          <div>{{educacion.descripcion}}</div>
+      </td>
+      <td *ngIf="editando.get(educacion.id)">
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Está Cursando</span>
+          <input style="margin-top: 1.5%;" #estaCursandoId (change)="getEstaCursandoValueMap(educacion.id, estaCursandoId.checked)" type="checkbox" class="input-group-text form-check-input" aria-describedby="basic-addon3" [checked]="educacion.estaCursando">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">URL Foto</span>
+          <input #urlFotoId (keyup)="getUrlFotoValueMap(educacion.id, urlFotoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="educacion.urlFoto">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Título</span>
+          <input #tituloAlcanzadoId (keyup)="getTituloAlcanzadoValueMap(educacion.id, tituloAlcanzadoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="educacion.tituloAlcanzado">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Lugar</span>
+          <input #lugarId (keyup)="getLugarValueMap(educacion.id, lugarId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="educacion.lugar">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Año Inicio</span>
+          <input #fechaInicioId (keyup)="getFechaInicioValueMap(educacion.id, fechaInicioId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="educacion.fechaInicio">
+        </div>
+        <div *ngIf="estaCursandoMap(educacion.id) === false" class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Año Fin</span>
+          <input #fechaFinId (keyup)="getFechaFinValueMap(educacion.id, fechaFinId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="educacion.fechaFin">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Descripción</span>
+          <input #descripcionId (keyup)="getDescripcionValueMap(educacion.id, descripcionId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="educacion.descripcion">
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

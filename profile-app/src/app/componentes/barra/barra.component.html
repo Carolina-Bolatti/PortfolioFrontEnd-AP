@@ -1,14 +1,93 @@
 <div class="barra">
     <img style="z-index:1;position:absolute;" src="assets/barra/imagenes/Cuerpo_B_ArgentinaPrograma_01.png">
     <div style="z-index:2;position:absolute;">
-        <img class="foto" [src]="miPersona.urlFoto">
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">PERSONAL</th>
-              </tr>
-            </thead>
-            <tbody>
+      <img *ngIf="editando === false" class="foto" [src]="miPersona.urlFoto">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">
+              <div class="d-flex d-flex-row">
+                <div class="d-flex">PERSONAL</div>
+                <div class="d-flex justify-content-end float-end" style="margin-left: 10%;">
+                  <button *ngIf="noLogueado === false && editando === false" style="visibility: hidden;" type="button" (click)="onCancel()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+                  <button *ngIf="noLogueado === false && editando === false" type="button" (click)="onEdit()" class="btn btn-dark login-header"><i class="fa-regular fa-pen"></i></button>
+                  <button *ngIf="noLogueado === false && editando" type="button" (click)="onSave()" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+                  <button *ngIf="noLogueado === false && editando" type="button" (click)="onCancel()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+                </div>
+              </div>
+    
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="editando">
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">URL Foto</span>
+              <input #urlFotoId (keyup)="getUrlFotoValue(urlFotoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.urlFoto">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Nombre</span>
+              <input #nombreId (keyup)="getNombreValue(nombreId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.nombre">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Apellido</span>
+              <input #apellidoId (keyup)="getApellidoValue(nombreId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.apellido">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Cumpleaños</span>
+              <input #fechaNacId (keyup)="getFechaNacValue(fechaNacId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.fechaNac">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Estado Civil</span>
+              <input #estadoCivilId (keyup)="getEstadoCivilValue(estadoCivilId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.estadoCivil">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Nacionalidad</span>
+              <input #nacionalidadId (keyup)="getNacionalidadValue(nacionalidadId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.nacionalidad">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Lenguajes</span>
+              <input #lenguajesId (keyup)="getLenguajesValue(lenguajesId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.lenguajes">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Celular/Wsp.</span>
+              <input #celularId (keyup)="getEstadoCivilValue(celularId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.celular">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Teléfono</span>
+              <input #telefonoId (keyup)="getTelefonoValue(telefonoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.telefono">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">E-mail</span>
+              <input #correoId (keyup)="getCorreoValue(correoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.correo">
+            </div>
+          </tr>
+          <tr class="input-group d-flex align-items-start d-flex-column">
+            <div style="margin: 2px;">
+              <span class="input-group-text" id="basic-addon3">Dirección</span>
+              <input #direccionId (keyup)="getDireccionValue(direccionId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.direccion">
+            </div>
+          </tr>
+        </tbody>
+            <tbody *ngIf="editando === false">
               <tr>
                 <th scope="row">Nombre</th>
                 <td>{{miPersona.nombre}} {{miPersona.apellido}}</td>
@@ -31,7 +110,7 @@
               </tr>
             </tbody>
           </table>
-          <table class="table">
+          <table  *ngIf="editando === false" class="table">
             <thead>
               <tr>
                 <th scope="col">CONTACTO</th>
