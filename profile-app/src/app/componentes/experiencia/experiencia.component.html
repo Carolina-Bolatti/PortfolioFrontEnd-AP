@@ -1,18 +1,96 @@
 <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">EXPERIENCIA</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let experiencia of miExperienciaList">
-        <th scope="row"><img [src]="experiencia.urlFotoEmpresa"></th>
-        <td>
-            <div><b>{{experiencia.tipoEmpleo.nombreTipo}}</b></div>
-            <div *ngIf="experiencia.esTrabajoActual">{{experiencia.nombreEmpresa}} ({{experiencia.fechaInicio}} - Presente)</div>
-            <div *ngIf="experiencia.esTrabajoActual === false">{{experiencia.nombreEmpresa}} ({{experiencia.fechaInicio}} - {{experiencia.fechaFin}})</div>
-            <div>{{experiencia.experienciaLaboralcol}}</div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th scope="col" class="d-flex align-items-center">
+        <div>EXPERIENCIA</div>
+        <div class="d-flex justify-content-end float-end" style="margin-left: 2%;">
+          <button *ngIf="noLogueado === false && agregando === false" type="button" (click)="onAdd()" class="btn btn-dark login-header"><i class="fa-solid fa-plus"></i></button>
+          <button *ngIf="noLogueado === false && agregando === false" style="visibility: hidden;" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+          <button *ngIf="noLogueado === false && agregando" type="button" (click)="onNew()" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+          <button *ngIf="noLogueado === false && agregando" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+      </th>
+    </tr>
+  </thead>
+</table>
+<div *ngIf="agregando">
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Trabajo Actual</span>
+    <input style="margin-top: 1.5%;" #esTrabajoActualId (change)="getTrabajoActualValue(esTrabajoActualId.checked)" type="checkbox" class="input-group-text form-check-input" aria-describedby="basic-addon3" [checked]="false">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">URL Foto Empresa</span>
+    <input #urlFotoEmpresaId (keyup)="getUrlFotoEmpresaValue(urlFotoEmpresaId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Tipo de Empleo</span>
+    <input #tipoEmpleoId (keyup)="getTipoEmpleoValue(tipoEmpleoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Empresa</span>
+    <input #nombreEmpresaId (keyup)="getNombreEmpresaValue(nombreEmpresaId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Año Inicio</span>
+    <input #fechaInicioId (keyup)="getFechaInicioValue(fechaInicioId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div *ngIf="!esTrabajoActual" class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Año Fin</span>
+    <input #fechaFinId (keyup)="getFechaFinValue(fechaFinId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+  <div class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">Experiencia</span>
+    <input #experienciaLaboralcolId (keyup)="getExperienciaLaboralcolValue(experienciaLaboralcolId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+  </div>
+</div>
+<table class="table">
+  <tbody>
+    <tr *ngFor="let experiencia of miExperienciaList">
+      <th scope="row">
+        <div class="d-flex align-items-center float-end">
+          <button *ngIf="noLogueado === false && editando.get(experiencia.id) === false && borrando.get(experiencia.id) === false" type="button" (click)="onEdit(experiencia.id)" class="btn btn-dark login-header"><i class="fa-regular fa-pen"></i></button>
+          <button *ngIf="noLogueado === false && editando.get(experiencia.id) === false && borrando.get(experiencia.id) === false" type="button" (click)="onDelete(experiencia.id)" class="btn btn-dark login-header"><i class="fa-regular fa-trash-can"></i></button>
+          <button *ngIf="noLogueado === false && (editando.get(experiencia.id) || borrando.get(experiencia.id))" type="button" (click)="onSave(experiencia.id)" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+          <button *ngIf="noLogueado === false && (editando.get(experiencia.id) || borrando.get(experiencia.id))" type="button" (click)="onCancel(experiencia.id)" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+        <img *ngIf="editando.get(experiencia.id) === false && borrando.get(experiencia.id) === false" [src]="experiencia.urlFotoEmpresa">
+      </th>
+      <td *ngIf="editando.get(experiencia.id) === false" [ngClass]="{'text-decoration-line-through' : borrando.get(experiencia.id)}">
+        <div><b>{{experiencia.tipoEmpleo.nombreTipo}}</b></div>
+        <div *ngIf="experiencia.esTrabajoActual">{{experiencia.nombreEmpresa}} ({{experiencia.fechaInicio}} - Presente)</div>
+        <div *ngIf="experiencia.esTrabajoActual === false">{{experiencia.nombreEmpresa}} ({{experiencia.fechaInicio}} - {{experiencia.fechaFin}})</div>
+        <div>{{experiencia.experienciaLaboralcol}}</div>
+      </td>
+      <td *ngIf="editando.get(experiencia.id)">
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Trabajo Actual</span>
+          <input style="margin-top: 1.5%;" #esTrabajoActualId (change)="getTrabajoActualValueMap(experiencia.id, esTrabajoActualId.checked)" type="checkbox" class="input-group-text form-check-input" aria-describedby="basic-addon3" [checked]="experiencia.esTrabajoActual">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">URL Foto Empresa</span>
+          <input #urlFotoEmpresaId (keyup)="getUrlFotoEmpresaValueMap(experiencia.id, urlFotoEmpresaId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="experiencia.urlFotoEmpresa">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Tipo de Empleo</span>
+          <input #tipoEmpleoId (keyup)="getTipoEmpleoValueMap(experiencia.id, tipoEmpleoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="experiencia.tipoEmpleo.nombreTipo">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Empresa</span>
+          <input #nombreEmpresaId (keyup)="getNombreEmpresaValueMap(experiencia.id, nombreEmpresaId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="experiencia.nombreEmpresa">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Año Inicio</span>
+          <input #fechaInicioId (keyup)="getFechaInicioValueMap(experiencia.id, fechaInicioId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="experiencia.fechaInicio">
+        </div>
+        <div *ngIf="esTrabajoActualMap(experiencia.id) === false" class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Año Fin</span>
+          <input #fechaFinId (keyup)="getFechaFinValueMap(experiencia.id, fechaFinId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="experiencia.fechaFin">
+        </div>
+        <div class="input-group d-flex d-flex-row">
+          <span class="input-group-text" id="basic-addon3">Experiencia</span>
+          <input #experienciaLaboralcolId (keyup)="getExperienciaLaboralcolValueMap(experiencia.id, experienciaLaboralcolId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="experiencia.experienciaLaboralcol">
+        </div>
+      </td>
+  </tr>
+  </tbody>
+</table>

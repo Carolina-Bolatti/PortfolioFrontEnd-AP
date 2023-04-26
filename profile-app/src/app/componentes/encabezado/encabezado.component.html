@@ -7,6 +7,27 @@
         <a [href]="miPersona.urlIg"><img class="in-header" src="assets/encabezado/imagenes/instagram_logo.jpeg.png" alt="Instagram"></a>
         <a [href]="miPersona.urlGithub"><img class="in-header" src="assets/encabezado/imagenes/GitHub_logo.jpeg.png" alt="GitHub"></a>
         <button *ngIf="noLogueado" type="button" onclick="location.href='iniciar-sesion'" class="btn btn-dark login-header">Login</button>
+        <button *ngIf="noLogueado === false && editando === false" style="visibility: hidden;" type="button" (click)="onCancel()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+        <button *ngIf="noLogueado === false && editando === false" type="button" (click)="onEdit()" class="btn btn-dark login-header"><i class="fa-regular fa-pen"></i></button>
+        <button *ngIf="noLogueado === false && editando" type="button" (click)="onSave()" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+        <button *ngIf="noLogueado === false && editando" type="button" (click)="onCancel()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
     </div>
 </div>
+<div *ngIf="editando" class="input-group d-flex d-flex-row">
+    <img class="logo input-group-text" src="assets/encabezado/imagenes/Linkedin_logo.jpeg.png" alt="LinkedIn">
+    <input type="text" #urlLinkedinId (keyup)="getUrlLinkedinValue(urlLinkedinId.value)" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.urlLinkedin">
+</div>
+<div *ngIf="editando" class="input-group d-flex d-flex-row">
+    <img class="logo input-group-text" src="assets/encabezado/imagenes/instagram_logo.jpeg.png" alt="LinkedIn">
+    <input #urlIgId (keyup)="getUrlIgValue(urlIgId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.urlIg">
+</div>
+<div *ngIf="editando" class="input-group d-flex d-flex-row">
+    <img class="logo input-group-text" src="assets/encabezado/imagenes/GitHub_logo.jpeg.png" alt="LinkedIn">
+    <input #urlGithubId (keyup)="getUrlGithubValue(urlGithubId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.urlGithub">
+</div>
+<div *ngIf="editando" class="input-group d-flex d-flex-row">
+    <span class="input-group-text" id="basic-addon3">URL Banner</span>
+    <input #urlBannerId (keyup)="getUrlBannerValue(urlBannerId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="miPersona.urlBanner">
+</div>
+  
 <img class="banner-header" [src]="miPersona.urlBanner" alt="{{miPersona.nombre}} {{miPersona.apellido}}">

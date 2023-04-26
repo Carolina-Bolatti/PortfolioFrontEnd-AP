@@ -1,15 +1,61 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">PROYECTOS</th>
+        <th scope="col" class="d-flex d-flex-row">
+          <div>PROYECTOS</div>
+          <div class="d-flex justify-content-end float-start" style="margin-left: 2%;">
+            <button *ngIf="noLogueado === false && agregando === false" type="button" (click)="onAdd()" class="btn btn-dark login-header"><i class="fa-solid fa-plus"></i></button>
+            <button *ngIf="noLogueado === false && agregando === false" style="visibility: hidden;" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+            <button *ngIf="noLogueado === false && agregando" type="button" (click)="onNew()" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+            <button *ngIf="noLogueado === false && agregando" type="button" (click)="onCancelAdd()" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+          </div>
+        </th>
       </tr>
     </thead>
+  </table>
+  <div *ngIf="agregando">
+    <div class="input-group d-flex d-flex-row">
+      <span class="input-group-text" id="basic-addon3">Nombre</span>
+      <input #nombreId (keyup)="getNombreValue(nombreId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+    </div>
+    <div class="input-group d-flex d-flex-row">
+      <span class="input-group-text" id="basic-addon3">URL Logo</span>
+      <input #urlLogoId (keyup)="getUrlLogoValue(urlLogoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+    </div>
+    <div class="input-group d-flex d-flex-row">
+      <span class="input-group-text" id="basic-addon3">Descripción</span>
+      <input #descripcionId (keyup)="getDescripcionValue(descripcionId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="">
+    </div>
+  </div>
+  <table class="table">  
     <tbody>
       <tr *ngFor="let proyecto of miProyectosList">
-        <th scope="row"><img [src]="proyecto.urlLogo"></th>
-        <td>
+        <th scope="row">
+          <div class="d-flex align-items-center float-end">
+            <button *ngIf="noLogueado === false && editando.get(proyecto.id) === false && borrando.get(proyecto.id) === false" type="button" (click)="onEdit(proyecto.id)" class="btn btn-dark login-header"><i class="fa-regular fa-pen"></i></button>
+            <button *ngIf="noLogueado === false && editando.get(proyecto.id) === false && borrando.get(proyecto.id) === false" type="button" (click)="onDelete(proyecto.id)" class="btn btn-dark login-header"><i class="fa-regular fa-trash-can"></i></button>
+            <button *ngIf="noLogueado === false && (editando.get(proyecto.id) || borrando.get(proyecto.id))" type="button" (click)="onSave(proyecto.id)" class="btn btn-dark login-header"><i class="fa-regular fa-check"></i></button>
+            <button *ngIf="noLogueado === false && (editando.get(proyecto.id) || borrando.get(proyecto.id))" type="button" (click)="onCancel(proyecto.id)" class="btn btn-dark login-header"><i class="fa-regular fa-xmark"></i></button>
+          </div>
+          <img *ngIf="editando.get(proyecto.id) === false && borrando.get(proyecto.id) === false" [src]="proyecto.urlLogo">
+        </th>
+        <td *ngIf="editando.get(proyecto.id) === false" [ngClass]="{'text-decoration-line-through' : borrando.get(proyecto.id)}">
             <div><b>{{proyecto.nombre}}</b></div>
             <div>{{proyecto.descripcion}}</div>
+        </td>
+        <td *ngIf="editando.get(proyecto.id)">
+          <div class="input-group d-flex d-flex-row">
+            <span class="input-group-text" id="basic-addon3">HARD / SOFT</span>
+            <input #nombreId (keyup)="getNombreValueMap(proyecto.id, nombreId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="proyecto.nombre">
+          </div>
+          <div class="input-group d-flex d-flex-row">
+            <span class="input-group-text" id="basic-addon3">URL Porcentaje</span>
+            <input #urlLogoId (keyup)="getUrlLogoValueMap(proyecto.id, urlLogoId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="proyecto.urlLogo">
+          </div>
+          <div class="input-group d-flex d-flex-row">
+            <span class="input-group-text" id="basic-addon3">Skill</span>
+            <input #descripcionId (keyup)="getDescripcionValueMap(proyecto.id, descripcionId.value)" type="text" class="form-control" aria-describedby="basic-addon3" [value]="proyecto.descripcion">
+          </div>
         </td>
       </tr>
     </tbody>

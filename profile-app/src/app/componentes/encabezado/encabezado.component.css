@@ -17,3 +17,8 @@
 .banner-header {
     width: 100%;
 }
+
+.logo {
+    max-width: 5%;
+    height: auto;
+}
