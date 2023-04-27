@@ -1,11 +1,6 @@
 # PortfolioFrontEnd-AP
 
+FrontEnd del Portfolio Web Full Stack de María Carolina Bolatti Cristofaro para Argentina Programa
+
 Para ver el profile:
-http://localhost:4200/portfolio
-
-No funciona el login:
-http://localhost:4200/
-http://localhost:4200/iniciar-sesion
-
-No llegué a terminar lo pedido, había solicitado una nueva extensión para la entrega de Argentina Programa pero siendo el último día de entrega aún no me fue ortorgada. Ojalá lo reconsideren.
-
+https://portfoliofrontend-ap-1e23d.web.app/portfolio
